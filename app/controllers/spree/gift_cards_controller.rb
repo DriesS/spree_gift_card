@@ -17,7 +17,7 @@ module Spree
           line_item = LineItem.new(quantity: 1)
           line_item.gift_card = @gift_card
           line_item.variant = @gift_card.variant
-          line_item.price = @gift_card.variant.price
+          line_item.price = @gift_card.original_value
           # Add to order
           order = current_order(true)
           order.line_items << line_item
@@ -39,6 +39,7 @@ module Spree
     def find_gift_card_variants
       gift_card_product_ids = Product.not_deleted.where(["is_gift_card = ?", true]).map(&:id)
       @gift_card_variants = Variant.joins(:prices).where(["amount > 0 AND product_id IN (?)", gift_card_product_ids]).order("amount")
+      @custom_gift_card_variant = Variant.where(["sku = 'custom' AND product_id IN (?)", gift_card_product_ids]).first
     end
 
   end

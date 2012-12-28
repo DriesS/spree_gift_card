@@ -1,3 +1,5 @@
+#encoding: utf-8
+
 require 'spree/core/validators/email'
 
 module Spree
@@ -5,7 +7,7 @@ module Spree
 
     UNACTIVATABLE_ORDER_STATES = ["complete", "awaiting_return", "returned"]
 
-    attr_accessible :email, :name, :note, :variant_id
+    attr_accessible :email, :name, :note, :variant_id, :free_variant_value
 
     belongs_to :variant
     belongs_to :line_item
@@ -16,11 +18,19 @@ module Spree
     validates :current_value,      presence: true
     validates :email, email: true, presence: true
     validates :name,               presence: true
-    validates :original_value,     presence: true
+    validates :original_value, presence: true, :inclusion => {:in => 25..2500, :message => "should be between € 25 and € 2500"}
 
     before_validation :generate_code, on: :create
     before_validation :set_calculator, on: :create
-    before_validation :set_values, on: :create
+    before_validation :set_values, on: :create, :unless => Proc.new { |gift_card| gift_card.custom_value? }
+
+    attr_reader :free_variant_value
+
+    def free_variant_value=(value)
+      self.current_value  = value
+      self.original_value = value
+      @free_variant_value = value
+    end
 
     calculated_adjustments
 
@@ -30,6 +40,10 @@ module Spree
       order.update!
       create_adjustment(I18n.t(:gift_card), order, order, true)
       order.update!
+    end
+
+    def custom_value?
+      self.free_variant_value.present?
     end
 
     # Calculate the amount to be used when creating an adjustment
