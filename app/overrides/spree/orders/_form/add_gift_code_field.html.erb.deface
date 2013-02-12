@@ -1,4 +1,5 @@
-<!-- insert_bottom '#cart-detail' -->
+<!-- insert_bottom "[data-hook='inside_cart_form']" 
+enabled -->
 
 <tbody class="gift-code-field">
   <tr>
