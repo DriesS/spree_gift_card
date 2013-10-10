@@ -7,7 +7,7 @@
     <%= f.select :variant_id, @gift_card_variants.map { |variant| [variant.display_price, variant.id] } %>
   </p>
   <p>
-    <%= f.label :email, t("email") %>
+    <%= f.label :email, t(:email) %>
     <span class="required">*</span><br/>
     <%= f.text_field :email %>
   </p>

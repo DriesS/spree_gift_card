@@ -4,8 +4,7 @@ Spree::OrdersController.class_eval do
   def update
     @order = current_order
     if @order.update_attributes(params[:order])
-      render :edit and return unless apply_coupon_code if defined?(Spree::Promo)
-      render :edit and return unless apply_gift_code
+      render :edit and return unless apply_promo_code
 
       @order.line_items = @order.line_items.select {|li| li.quantity > 0 }
       fire_event('spree.order.contents_changed')
