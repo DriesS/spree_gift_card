@@ -1,7 +1,7 @@
 Gem::Specification.new do |s|
   s.platform    = Gem::Platform::RUBY
   s.name        = 'spree_gift_card'
-  s.version     = '1.0.0.beta'
+  s.version     = '2.0.0.beta'
   s.summary     = 'Spree Gift Card'
   s.description = 'Spree Gift Card Extension'
 
@@ -16,7 +16,7 @@ Gem::Specification.new do |s|
   s.required_ruby_version = '>= 1.9.2'
   s.requirements << 'none'
 
-  s.add_dependency 'spree_core', '~> 1.3.0'
+  s.add_dependency 'spree_core', '~> 2.1.0'
 
   s.add_development_dependency 'capybara', '~> 1.1'
   s.add_development_dependency 'coffee-rails'
