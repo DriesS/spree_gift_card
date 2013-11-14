@@ -32,7 +32,7 @@ module Spree
       @free_variant_value = value
     end
 
-    calculated_adjustments
+    include Spree::Core::CalculatedAdjustments
 
     def apply(order)
       # Nothing to do if the gift card is already associated with the order

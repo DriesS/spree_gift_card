@@ -6,9 +6,7 @@ Spree::CheckoutController.class_eval do
       fire_event('spree.checkout.update')
       render :edit and return unless apply_promo_code
 
-      if @order.next
-        state_callback(:after)
-      else
+      unless @order.next
         flash[:error] = t(:payment_processing_failed)
         redirect_to checkout_state_path(@order.state)
         return
