@@ -3,20 +3,10 @@ Spree::Order.class_eval do
   attr_accessible :gift_code
   attr_accessor :gift_code
 
-  # If variant is a gift card we say order doesn't already contain it so that each gift card is it's own line item.
-  def find_line_item_by_variant(variant)
-    return false if variant.product.is_gift_card?
-    line_items.detect { |line_item| line_item.variant_id == variant.id }
-  end
-
   # Finalizes an in progress order after checkout is complete.
   # Called after transition to complete state when payments will have been processed.
   def finalize_with_gift_card!
     finalize_without_gift_card!
-    # Send out emails for any newly purchased gift cards.
-    self.line_items.each do |li|
-      Spree::OrderMailer.gift_card_email(li.gift_card, self).deliver if li.gift_card
-    end
     # Record any gift card redemptions.
     self.adjustments.where(originator_type: 'Spree::GiftCard').each do |adjustment|
       adjustment.originator.debit(adjustment.amount, self)

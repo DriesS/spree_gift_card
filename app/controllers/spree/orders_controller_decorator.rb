@@ -1,25 +1,8 @@
 Spree::OrdersController.class_eval do
 
-  # TODO Apply gift code in a before filter if possible to avoid overriding the update method for easier upgrades?
-  def update
-    @order = current_order
-    if @order.update_attributes(params[:order])
-      render :edit and return unless apply_promo_code
-
-      @order.line_items = @order.line_items.select {|li| li.quantity > 0 }
-      fire_event('spree.order.contents_changed')
-      respond_with(@order) do |format|
-        format.html do
-          if params.has_key?(:checkout)
-            redirect_to checkout_state_path(@order.checkout_steps.first)
-          else
-            redirect_to cart_path
-          end
-        end
-      end
-    else
-      respond_with(@order)
-    end
+  durably_decorate :after_update_attributes, mode: 'soft', sha: '4a4bdc54d88160bed9de2b5ae64d9f5715cbf99a' do
+    apply_gift_code
+    original_after_update_attributes
   end
 
 end

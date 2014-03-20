@@ -1,4 +1,3 @@
-source 'http://rubygems.org'
-# TODO using my fork until this is accepted: https://github.com/spree/spree/pull/2213
-gem 'spree', github: 'jdutil/spree', branch: 'imports'
+source 'https://rubygems.org'
+gem 'spree', github: 'spree/spree', branch: '2-0-stable'
 gemspec

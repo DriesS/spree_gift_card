@@ -6,13 +6,13 @@ feature "Admin Gift Card Administration", js: true do
 
   before do
     ## TODO seed helper for gc
-    product = Spree::Product.new(available_on: Time.now, name: "Gift Card", is_gift_card: true, permalink: 'gift-card', price: 0)
+    product = Spree::Product.new(available_on: Time.now, name: "Gift Card", is_gift_card: true, permalink: 'gift-card', price: 0, shipping_category_id: create(:shipping_category).id)
     option_type = Spree::OptionType.new(name: "is-gift-card", presentation: "Value")
     product.option_types << option_type
     [25, 50, 75, 100].each do |value|
       option_value = Spree::OptionValue.new(name: value, presentation: "$#{value}")
       option_value.option_type = option_type
-      variant = Spree::Variant.new(price: value.to_i, sku: "GIFTCERT#{value}", on_hand: 1000)
+      variant = Spree::Variant.new(price: value.to_i, sku: "GIFTCERT#{value}")
       variant.option_values << option_value
       product.variants << variant
     end
@@ -26,7 +26,7 @@ feature "Admin Gift Card Administration", js: true do
     fill_in 'gift_card[email]', with: 'spree@example.com'
     fill_in 'gift_card[name]', with: 'First Last'
     fill_in 'gift_card[note]', with: 'Test message.'
-    select '$50.00', from: 'gift_card[variant_id]'
+    select2 '$50.00', from: 'Value'
     click_button 'Create'
     page.should have_content('You have successfully created the gift card.')
     within 'table.index' do
@@ -42,7 +42,7 @@ feature "Admin Gift Card Administration", js: true do
     fill_in 'gift_card[email]', with: 'example.com'
     fill_in 'gift_card[name]', with: 'First Last'
     fill_in 'gift_card[note]', with: 'Test message.'
-    select '$50.00', from: 'gift_card[variant_id]'
+    select2 '$50.00', from: 'Value'
     click_button 'Create'
     page.should have_css('.field_with_errors #gift_card_email')
     Spree::GiftCard.count.should eql(0)
@@ -56,9 +56,8 @@ feature "Admin Gift Card Administration", js: true do
       click_link 'Delete'
       page.driver.browser.switch_to.alert.accept
     end
-    wait_until do
-      Spree::GiftCard.count.should eql(0)
-    end
+    sleep 1
+    Spree::GiftCard.count.should eql(0)
   end
 
   scenario 'updating gift card' do
@@ -68,7 +67,6 @@ feature "Admin Gift Card Administration", js: true do
     fill_in 'gift_card[email]', with: 'spree@example.com'
     fill_in 'gift_card[name]', with: 'First Last'
     fill_in 'gift_card[note]', with: 'Test message.'
-    select '$50.00', from: 'gift_card[variant_id]'
     click_button 'Update'
     page.should have_content("Gift card \"First Last\" has been successfully updated!")
     within 'table.index' do

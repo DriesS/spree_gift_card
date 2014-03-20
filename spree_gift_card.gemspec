@@ -5,7 +5,7 @@ Gem::Specification.new do |s|
   s.summary     = 'Spree Gift Card'
   s.description = 'Spree Gift Card Extension'
 
-  s.author      = ['Jeff Dutil']
+  s.authors     = ['Jeff Dutil']
   s.email       = ['jdutil@burlingtonwebapps.com']
   s.homepage    = 'http://github.com/jdutil/spree_gift_card'
 
@@ -13,19 +13,21 @@ Gem::Specification.new do |s|
   s.test_files  = `git ls-files -- {test,spec,features}/*`.split("\n")
 
   s.require_path = 'lib'
-  s.required_ruby_version = '>= 1.9.2'
+  s.required_ruby_version = '>= 1.9.3'
   s.requirements << 'none'
 
   s.add_dependency 'spree_core', '~> 2.0.0'
+  s.add_dependency 'durable_decorator', '~> 0.2.0'
 
-  s.add_development_dependency 'capybara', '~> 1.1'
+  s.add_development_dependency 'capybara', '~> 2.0'
   s.add_development_dependency 'coffee-rails'
-  s.add_development_dependency 'database_cleaner'
-  s.add_development_dependency 'factory_girl', '~> 3.6'# '~> 4.1' # cant use 4.1 until Spree's factories are compatible maybe in 1.3.x
+  s.add_development_dependency 'database_cleaner', '~> 1.0.1'
+  s.add_development_dependency 'factory_girl', '~> 4.2'
   s.add_development_dependency 'ffaker'
-  s.add_development_dependency 'rspec-rails',  '~> 2.11'
+  s.add_development_dependency 'rspec-rails',  '~> 2.13'
   s.add_development_dependency 'sass-rails'
-  s.add_development_dependency 'shoulda-matchers'
+  s.add_development_dependency 'selenium-webdriver'
+  s.add_development_dependency 'shoulda-matchers', '>= 1.5.4'
   s.add_development_dependency 'simplecov'
   s.add_development_dependency 'sqlite3'
 end
