@@ -13,3 +13,4 @@ spec/dummy
 Gemfile.lock
 coverage
 .sass-cache
+*.orig
