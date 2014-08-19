@@ -11,6 +11,7 @@
 <%= render :partial => 'spree/shared/error_messages', :locals => { :target => @gift_card } %>
 
 <%= form_for [:admin, @gift_card] do |f| %>
+
   <fieldset class="no-border-top">
     <%= render :partial => 'form', :locals => { :f => f } %>
     <%= render :partial => 'spree/admin/shared/edit_resource_links' %>

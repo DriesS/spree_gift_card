@@ -16,8 +16,9 @@
     <%= f.text_field :note %>
   <% end %>
   <%= f.field_container :variant_id do %>
-    <%= f.label :variant_id, t(:value) %>
+    <%= f.label :variant_id, "Custom value: "%>
     <span class="required">*</span><br/>
-    <%= f.select :variant_id, @gift_card_variants.map { |v| [v.display_price, v.id] }, {}, disabled: (f.object.present? && !f.object.new_record?) %>
+   
+    <%= f.text_field :free_variant_value, class:"input-small", :id => :free_variant_value_input, value:  @gift_card.original_value %>
   <% end %>
 </fieldset>
